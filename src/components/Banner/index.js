@@ -1,20 +1,19 @@
 import React from "react";
-import { HeroWrapper, HeadingWrapper, Heading, SubHeading } from "./style";
-import { BgImage } from "gbimage-bridge";
-import { getImage } from "gatsby-plugin-image";
+import { HeroWrapper, HeadingWrapper, Heading, SubHeading, ImageWrapper} from "./style";
+import { GatsbyImage } from "gatsby-plugin-image";
 
-export const Hero = ({ heading, subHeading, backgroundImage }) => {
-  const pluginImage = getImage(backgroundImage);
+export const Banner = ({ heading, subHeading, backgroundImage }) => {
   return (
     <HeroWrapper>
-      <BgImage image={pluginImage}>
-        <HeadingWrapper>
-          <div>
-            <Heading>{heading}</Heading>
-            <SubHeading>{subHeading}</SubHeading>
-          </div>
-        </HeadingWrapper>
-      </BgImage>
+      <HeadingWrapper>
+        <div>
+          <Heading>{heading}</Heading>
+          <SubHeading>{subHeading}</SubHeading>
+        </div>
+      </HeadingWrapper>
+        <ImageWrapper>
+            <GatsbyImage alt={"banner"} image={backgroundImage}/>
+        </ImageWrapper>
     </HeroWrapper>
   );
 };

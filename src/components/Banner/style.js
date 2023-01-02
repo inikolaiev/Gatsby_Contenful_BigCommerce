@@ -2,8 +2,10 @@ import styled from "styled-components";
 
 export const HeroWrapper = styled.div`
     width: 100%;
-    height: 50vh;
-  color: aliceblue;
+  	color: black;
+  	display: flex;
+  	align-items: center;
+  	margin: 100px 0;
   
     > div:first-child {
         height: 100%;
@@ -25,7 +27,7 @@ export const HeadingWrapper = styled.div`
 
 export const Heading = styled.div`
     margin: auto;
-    font-size: 60px;
+    font-size: 42px;
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
@@ -33,6 +35,11 @@ export const Heading = styled.div`
 
 export const SubHeading = styled.div`
     max-width: 500px;
-  font-size: 30px;
+  	font-size: 20px;
     margin: 0 auto;
+`;
+
+export const ImageWrapper = styled.div`
+  width: 50%;
+  position: relative;
 `;

@@ -1,15 +1,13 @@
 import React from "react";
 import { Layout, Product } from "../../components";
-import { graphql } from "gatsby";
 
 const ProductPage = (props) => {
-
-
+	const {product} = props.pageContext;
 	return(
 		<Layout>
 			<div>
-				<h1></h1>
-				<Product />
+				<h1>Product Page</h1>
+				<Product product={product} />
 			</div>
 		</Layout>
 	)

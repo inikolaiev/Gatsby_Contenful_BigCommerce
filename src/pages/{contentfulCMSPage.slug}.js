@@ -2,20 +2,21 @@ import React from "react";
 import { Layout } from "../components";
 import { graphql } from "gatsby";
 
-export default function contentfulHomePage(props) {
-  console.log(props.data.contentfulHomePage.title);
+export default function contentfulCmsPage(props) {
+  const { contentfulCmsPage: contentfulData } = props.data;
+
   return (
     <Layout>
-        <h1>ContentfulPage</h1>
+      <h1>{contentfulData.title}</h1>
     </Layout>
   )
 }
 
 export const query = graphql`
-  query PageQuery {
-      contentfulHomePage{
-          id
-          title
-      }
-  }
-`
+    query CMSQuery($id: String) {
+        contentfulCmsPage(id: { eq: $id }) {
+            id
+            title
+        }
+    }
+`;
