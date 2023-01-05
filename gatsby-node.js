@@ -105,11 +105,12 @@ exports.createPages = async ({ actions, graphql }) => {
 
 
 	createPage({
-		path: `${contentfulBlogListingPage.slug}`,
+		path: contentfulBlogListingPage.slug,
 		component: path.resolve(
 			"./src/templates/PaginatedBlogPage/index.js"
 		),
 		context: {
+			blogSlug: contentfulBlogListingPage.slug,
 			postsPerPage: contentfulBlogListingPage.postPerPage,
 			posts: allContentfulBlogPost.edges.map(blogPost => blogPost.node)
 		},

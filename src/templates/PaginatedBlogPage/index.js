@@ -9,7 +9,7 @@ const PaginatedBlogPage = ({ pageContext }) => {
 	const [currentPage, setCurrentPage] = useState(0);
 	const [postToRender, setPostToRender] = useState(posts);
 	const [filterTags, setFilterTags] = useState([]);
-
+	console.log(pageContext);
 	useEffect(()=> {
 		setPostToRender( posts.slice(
 					currentPage * pageContext.postsPerPage,
