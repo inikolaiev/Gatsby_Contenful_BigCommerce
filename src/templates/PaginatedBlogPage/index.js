@@ -9,33 +9,29 @@ const PaginatedBlogPage = ({ pageContext }) => {
 	const [currentPage, setCurrentPage] = useState(0);
 	const [postToRender, setPostToRender] = useState(posts);
 	const [filterTags, setFilterTags] = useState([]);
-	console.log(pageContext);
+
 	useEffect(()=> {
 		setPostToRender( posts.slice(
-					currentPage * pageContext.postsPerPage,
-					currentPage * pageContext.postsPerPage +
-					pageContext.postsPerPage
-				)
+			currentPage * pageContext.postsPerPage,
+			currentPage * pageContext.postsPerPage +
+			pageContext.postsPerPage
+			)
 		)
 	}, [currentPage, posts])
 
 	useEffect(()=> {
-		if (filterTags.length) {
-			setPosts(pageContext.posts.filter( blog => filterTags.includes(blog.blogTag)))
-		} else {
+		filterTags.length ?
+			setPosts(pageContext.posts.filter( blog => filterTags.includes(blog.blogTag))):
 			setPosts(pageContext.posts)
-		}
 	}, [filterTags])
 
 	const blogTags = [...new Set(pageContext.posts.map(post => post.blogTag))];
 	const handleTag = (tag) => {
-		setFilterTags(prevState => {
-			if(prevState.includes(tag)) {
-				return prevState.filter((item => item !== tag));
-			} else {
-				return [...prevState, tag]
-			}
-		});
+		setFilterTags(prevState =>
+			prevState.includes(tag) ?
+			prevState.filter((item => item !== tag)) :
+			[...prevState, tag]);
+
 		setCurrentPage(0);
 	}
 

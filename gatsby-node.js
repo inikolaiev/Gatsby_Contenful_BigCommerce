@@ -39,7 +39,7 @@ exports.createPages = async ({ actions, graphql }) => {
              allContentfulCategoryPage {
                 edges {
                   	node {
-						products
+						categoryId
 						id
 						title
 						slug
@@ -64,6 +64,7 @@ exports.createPages = async ({ actions, graphql }) => {
 						sku
 						description
 						price
+						categories
 					}
 				}
   			}
@@ -74,14 +75,14 @@ exports.createPages = async ({ actions, graphql }) => {
 		createPage({
 			path: `${category.node.slug}`,
 			context: {
-				products: category.node.products,
+				categoryId: +category.node.categoryId,
 				title: category.node.title,
 			},
 			component: path.resolve("./src/templates/Category/index.js"),
 		});
 
 		allBigCommerceProducts.edges.forEach(product => {
-			if (category.node.products.includes(product.node.sku)) {
+			if (product.node.categories.includes(parseInt(category.node.categoryId))) {
 				createPage({
 					path: `${category.node.slug}/${product.node.sku}`,
 					context: {

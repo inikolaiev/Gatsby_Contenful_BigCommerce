@@ -21,8 +21,8 @@ const Category = (props) => {
 	)
 };
 export const query = graphql`
-    query productsQuery($products: [String]) {
-        allBigCommerceProducts(filter: {sku: {in: $products}}) {
+    query productsQuery($categoryId: Int) {
+        allBigCommerceProducts(filter: {categories: {eq: $categoryId}}) {
             edges {
                 node {
                     images {
