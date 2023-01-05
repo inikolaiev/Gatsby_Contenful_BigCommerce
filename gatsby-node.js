@@ -27,6 +27,7 @@ exports.createPages = async ({ actions, graphql }) => {
                         publishedDate(formatString: "DD MMM YYYY")
                         description
                         title
+                        blogTag
                         contentful_id
                         image {
                             gatsbyImageData(layout: FULL_WIDTH, placeholder: BLURRED)
@@ -78,6 +79,7 @@ exports.createPages = async ({ actions, graphql }) => {
 			},
 			component: path.resolve("./src/templates/Category/index.js"),
 		});
+
 		allBigCommerceProducts.edges.forEach(product => {
 			if (category.node.products.includes(product.node.sku)) {
 				createPage({
@@ -101,28 +103,16 @@ exports.createPages = async ({ actions, graphql }) => {
 		});
 	});
 
-	const numPages = Math.ceil(
-		allContentfulBlogPost.edges.length / contentfulBlogListingPage.postPerPage
-	);
 
-	for (let i = 0; i < numPages; i++) {
-		createPage({
-			path: `${contentfulBlogListingPage.slug}${i === 0 ? "" : `/${i + 1}`}`,
-			component: path.resolve(
-				"./src/templates/PaginatedBlogPage/index.js"
-			),
-			context: {
-				blogSlug: contentfulBlogListingPage.slug,
-				totalPages: numPages,
-				currentPage: i + 1,
-				posts: allContentfulBlogPost.edges
-					.map((blogPost) => blogPost.node)
-					.slice(
-						i * contentfulBlogListingPage.postPerPage,
-						i * contentfulBlogListingPage.postPerPage +
-						contentfulBlogListingPage.postPerPage
-					),
-			},
-		});
-	}
+	createPage({
+		path: `${contentfulBlogListingPage.slug}`,
+		component: path.resolve(
+			"./src/templates/PaginatedBlogPage/index.js"
+		),
+		context: {
+			postsPerPage: contentfulBlogListingPage.postPerPage,
+			posts: allContentfulBlogPost.edges.map(blogPost => blogPost.node)
+		},
+	});
+
 };

@@ -1,24 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import { Layout } from 'components';
 import { Link } from 'gatsby';
-import { Content, Post, Pagination, ImageWrapper } from './style';
+import { Content, Post, Pagination, ImageWrapper, Tag, Filter } from './style';
 import { GatsbyImage } from "gatsby-plugin-image";
 
 const PaginatedBlogPage = ({ pageContext }) => {
+	const [posts, setPosts] = useState([...pageContext.posts]);
+	const [currentPage, setCurrentPage] = useState(0);
+	const [postToRender, setPostToRender] = useState(posts);
+	const [filterTags, setFilterTags] = useState([]);
+
+	useEffect(()=> {
+		setPostToRender( posts.slice(
+					currentPage * pageContext.postsPerPage,
+					currentPage * pageContext.postsPerPage +
+					pageContext.postsPerPage
+				)
+		)
+	}, [currentPage, posts])
+
+	useEffect(()=> {
+		if (filterTags.length) {
+			setPosts(pageContext.posts.filter( blog => filterTags.includes(blog.blogTag)))
+		} else {
+			setPosts(pageContext.posts)
+		}
+	}, [filterTags])
+
+	const blogTags = [...new Set(pageContext.posts.map(post => post.blogTag))];
+	const handleTag = (tag) => {
+		setFilterTags(prevState => {
+			if(prevState.includes(tag)) {
+				return prevState.filter((item => item !== tag));
+			} else {
+				return [...prevState, tag]
+			}
+		});
+		setCurrentPage(0);
+	}
+
+	const numPages = Math.ceil(
+		posts.length / pageContext.postsPerPage
+	);
+
 	return (
 		<Layout>
+			<Filter>
+				<h3>Filter by tag: </h3>
+				{blogTags && blogTags.map((tag, index) =>
+					<Tag key={index}>
+						<button style={{color: filterTags.includes(tag)? 'red' : 'black' }} onClick={() => {
+							handleTag(tag);
+						}}>
+							{tag}
+						</button>
+					</Tag>
+				)}
+			</Filter>
 			<Content>
-				{pageContext.posts.map((post) => (
+				{postToRender.map((post) => (
 					<Post key={post.contentful_id}>
 						<div>
 							<Link to={`/${pageContext.blogSlug}/${post.slug}`}>
 								{post.title}
 							</Link>
+							<Tag>{post.blogTag}</Tag>
 						</div>
+
 						<ImageWrapper>
 							<GatsbyImage alt={"banner"} image={post.image.gatsbyImageData}/>
 						</ImageWrapper>
 						<div>{post.description}</div>
+
 						<div>
 							<small>{post.publishedDate}</small>
 						</div>
@@ -26,15 +79,11 @@ const PaginatedBlogPage = ({ pageContext }) => {
 				))}
 			</Content>
 			<Pagination>
-				{Array.from({ length: pageContext.totalPages }).map((n, i) => {
+				{Array.from({ length: numPages }).map((n, i) => {
 					return (
-						<Link
-							to={`/${pageContext.blogSlug}/${
-								i === 0 ? '' : i + 1
-							}`}
-						>
+						<div style={{backgroundColor: currentPage===i ? 'gray' : 'white' }} onClick={()=> setCurrentPage(i)}>
 							{i + 1}
-						</Link>
+						</div>
 					);
 				})}
 			</Pagination>
