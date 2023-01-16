@@ -22,15 +22,15 @@ const PaginatedBlogPage = ({ pageContext }) => {
   useEffect(() => {
     filterTags.length
       ? setPosts(
-          pageContext.posts.filter(blog =>
-            blog.tags.some(tag => filterTags.includes(tag))
+          pageContext.posts.filter((blog) =>
+            blog.tags.some((tag) => filterTags.includes(tag))
           )
         )
       : setPosts(pageContext.posts);
   }, [filterTags]);
 
   const blogTags = [
-    ...new Set(pageContext.posts.map(post => post.tags).flat(1)),
+    ...new Set(pageContext.posts.map((post) => post.tags).flat(1)),
   ];
   const handleTag = (tag) => {
     setFilterTags((prevState) =>

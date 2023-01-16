@@ -17,10 +17,7 @@ export const RichText = ({ raw, references = [] }) => {
         const data = referencesMap[node.data.target.sys.id];
         return (
           <ImageWrapper>
-            <GatsbyImage
-              alt={data.title}
-              image={data.gatsbyImageData}
-            />
+            <GatsbyImage alt={data.title} image={data.gatsbyImageData} />
           </ImageWrapper>
         );
       },
@@ -33,19 +30,17 @@ export const RichText = ({ raw, references = [] }) => {
               <Hero
                 heading={data.title}
                 subHeading={data.description}
-                backgroundImage={
-                  data.photo.gatsbyImageData
-                }
+                backgroundImage={data.photo.gatsbyImageData}
               />
             );
           case "ContentfulHomeBanner":
             return (
-                <Banner
-                  heading={data.title}
-                  subHeading={data.description}
-                  backgroundImage={data.image.gatsbyImageData}
-                />
-            )
+              <Banner
+                heading={data.title}
+                subHeading={data.description}
+                backgroundImage={data.image.gatsbyImageData}
+              />
+            );
           default:
             return null;
         }

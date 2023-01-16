@@ -1,6 +1,6 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
-import { Menu } from '../../components';
+import { Menu } from "../../components";
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -16,13 +16,13 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export const Layout = ({ children }) => {
-    return (
-        <div>
-            <GlobalStyle />
-            <section>
-              <Menu/>
-              {children}
-            </section>
-        </div>
-    );
+  return (
+    <div>
+      <GlobalStyle />
+      <section>
+        <Menu />
+        {children}
+      </section>
+    </div>
+  );
 };

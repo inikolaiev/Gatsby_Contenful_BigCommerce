@@ -6,17 +6,16 @@ export const Wrapper = styled.div`
   p {
     font-size: 10px;
   }
-  
+
   a {
     width: 200px;
-	background-color: black;
-	color: #fff;
+    background-color: black;
+    color: #fff;
     height: 50px;
-	border-radius: 10px;
-	line-height: 50px;
+    border-radius: 10px;
+    line-height: 50px;
     text-align: center;
-	text-decoration: none;
-	display: inline-block;
+    text-decoration: none;
+    display: inline-block;
   }
 `;
-
