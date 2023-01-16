@@ -27,7 +27,7 @@ exports.createPages = async ({ actions, graphql }) => {
                         publishedDate(formatString: "DD MMM YYYY")
                         description
                         title
-                        blogTag
+                        tags
                         contentful_id
                         image {
                             gatsbyImageData(layout: FULL_WIDTH, placeholder: BLURRED)
