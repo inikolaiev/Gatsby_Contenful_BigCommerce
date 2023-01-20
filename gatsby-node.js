@@ -15,6 +15,7 @@ exports.createPages = async ({ actions, graphql }) => {
       contentfulBlogListingPage,
       allContentfulBlogPost,
       allBigCommerceCategories,
+      allContentfulCategoryPage,
       allBigCommerceProducts,
     },
   } = await graphql(`
@@ -50,7 +51,16 @@ exports.createPages = async ({ actions, graphql }) => {
           }
         }
       }
-
+      allContentfulCategoryPage {
+        edges {
+          node {
+            id
+            title
+            slug
+            categoryIds
+          }
+        }
+      }
       allBigCommerceProducts(filter: { is_visible: { eq: true } }) {
         edges {
           node {
@@ -80,7 +90,7 @@ exports.createPages = async ({ actions, graphql }) => {
     createPage({
       path: `${category.node.custom_url.url}`,
       context: {
-        categoryId: +category.node.bigcommerce_id,
+        categoryIds: +category.node.bigcommerce_id,
         title: category.node.name,
       },
       component: path.resolve("./src/templates/Category/index.js"),
@@ -92,6 +102,43 @@ exports.createPages = async ({ actions, graphql }) => {
       ) {
         createPage({
           path: `${category.node.custom_url.url}${product.node.sku}`,
+          context: {
+            product: product.node,
+          },
+          component: path.resolve("./src/templates/ProductPage/index.js"),
+        });
+      }
+    });
+  });
+
+  const availableCategories = allBigCommerceCategories.edges.map(
+    (category) => category.node.bigcommerce_id
+  );
+
+  allContentfulCategoryPage.edges.forEach((category) => {
+    createPage({
+      path: `${category.node.slug}`,
+      context: {
+        categoryIds: category.node.categoryIds.map((id) => {
+          if (availableCategories.includes(parseInt(id))) {
+            return parseInt(id);
+          }
+        }),
+        title: category.node.title,
+      },
+      component: path.resolve("./src/templates/Category/index.js"),
+    });
+
+    allBigCommerceProducts.edges.forEach((product) => {
+      if (
+        category.node.categoryIds.some((categoryID) => {
+          if (availableCategories.includes(categoryID)) {
+            product.node.categories.includes(parseInt(categoryID));
+          }
+        })
+      ) {
+        createPage({
+          path: `${category.node.slug}/${product.node.sku}`,
           context: {
             product: product.node,
           },

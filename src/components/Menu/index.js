@@ -53,7 +53,7 @@ export function Menu() {
     return (
       <MenuItem>
         <SubMenuItemWrapper>
-          <div>Categories</div>
+          <div>BigCommerce Categories</div>
           <div>
             {result.allBigCommerceCategories.edges.map((link, index) => {
               return (

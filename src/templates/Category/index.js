@@ -5,13 +5,14 @@ import { graphql } from "gatsby";
 const Category = (props) => {
   const { pageContext, path: categoryPath } = props;
   const allCategoryProducts = props.data.allBigCommerceProducts.edges;
-
+  console.log(props.pageContext.categoryIds);
   return (
     <Layout>
       <div>
         <h1>{pageContext.title}</h1>
         <ul>
-          {allCategoryProducts.map((item) => (
+          {allCategoryProducts.length ?
+          allCategoryProducts.map((item) => (
             <li>
               <Product
                 key={item.node.id}
@@ -20,16 +21,17 @@ const Category = (props) => {
                 product={item.node}
               />
             </li>
-          ))}
+          )) : <li>No products</li>
+          }
         </ul>
       </div>
     </Layout>
   );
 };
 export const query = graphql`
-  query productsQuery($categoryId: Int) {
+  query productsQuery($categoryIds: [Int]) {
     allBigCommerceProducts(
-      filter: { categories: { eq: $categoryId }, is_visible: { eq: true } }
+      filter: { categories: { in: $categoryIds }, is_visible: { eq: true } }
     ) {
       edges {
         node {
