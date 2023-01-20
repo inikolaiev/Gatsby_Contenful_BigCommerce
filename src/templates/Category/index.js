@@ -5,7 +5,7 @@ import { graphql } from "gatsby";
 const Category = (props) => {
   const { pageContext, path: categoryPath } = props;
   const allCategoryProducts = props.data.allBigCommerceProducts.edges;
-  console.log(props.pageContext.categoryIds);
+  console.log(pageContext);
   return (
     <Layout>
       <div>
@@ -19,6 +19,7 @@ const Category = (props) => {
                 categoryPath={categoryPath}
                 isCategory
                 product={item.node}
+                isContentfulPage={pageContext.isContentfulPage}
               />
             </li>
           )) : <li>No products</li>

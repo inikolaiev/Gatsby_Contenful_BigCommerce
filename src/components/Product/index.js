@@ -2,9 +2,8 @@ import React from "react";
 import { Link } from "gatsby";
 import { Wrapper } from "./style";
 
-export const Product = ({ product, categoryPath, isCategory }) => {
+export const Product = ({ product, categoryPath, isCategory, isContentfulPage }) => {
   const { name, images, description, price, sku, sale_price } = product;
-
   function createMarkup() {
     return { __html: description };
   }
@@ -39,7 +38,7 @@ export const Product = ({ product, categoryPath, isCategory }) => {
         <span>SKU: {sku}</span>
       </h3>
       <div dangerouslySetInnerHTML={createMarkup()} />
-      {isCategory && <Link to={`${categoryPath}${sku}`}>View Product</Link>}
+      {isCategory && <Link to={`${categoryPath}${isContentfulPage? '/': ''}${sku}`}>View Product</Link>}
       {!isCategory && variants}
     </Wrapper>
   );

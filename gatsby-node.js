@@ -92,6 +92,7 @@ exports.createPages = async ({ actions, graphql }) => {
       context: {
         categoryIds: +category.node.bigcommerce_id,
         title: category.node.name,
+        isContentfulPage: false,
       },
       component: path.resolve("./src/templates/Category/index.js"),
     });
@@ -125,6 +126,7 @@ exports.createPages = async ({ actions, graphql }) => {
           }
         }),
         title: category.node.title,
+        isContentfulPage: true,
       },
       component: path.resolve("./src/templates/Category/index.js"),
     });
@@ -132,8 +134,8 @@ exports.createPages = async ({ actions, graphql }) => {
     allBigCommerceProducts.edges.forEach((product) => {
       if (
         category.node.categoryIds.some((categoryID) => {
-          if (availableCategories.includes(categoryID)) {
-            product.node.categories.includes(parseInt(categoryID));
+          if (availableCategories.includes(parseInt(categoryID))) {
+          return product.node.categories.includes(parseInt(categoryID));
           }
         })
       ) {
